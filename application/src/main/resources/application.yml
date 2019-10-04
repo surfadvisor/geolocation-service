@@ -1,0 +1,37 @@
+# Server configuration
+server:
+  port: ${PORT:8000}
+  servlet:
+    context-path: /spots
+
+
+# Spring Boot configuration
+spring:
+  application:
+    name: spots
+  output:
+    ansi:
+      enabled: always
+  jackson:
+    default-property-inclusion: non_null
+
+# AWS
+amazon:
+  access:
+    key: ${AWS_ACCESS_KEY_ID}
+    secret-key: ${AWS_SECRET_ACCESS_KEY}
+  region: ${AWS_DEFAULT_REGION}
+  end-point:
+    url: dynamodb.${AWS_DEFAULT_REGION}.amazonaws.com
+
+# Logger configuration
+logging:
+  level:
+    org.zalando.logbook: TRACE
+    org.springframework.web: DEBUG
+    com.surf.advisor: DEBUG
+  path: /logs
+
+logbook:
+  format.style: http
+  exclude: /health
