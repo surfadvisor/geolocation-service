@@ -2,7 +2,7 @@
 server:
   port: ${PORT:8000}
   servlet:
-    context-path: /spots
+    context-path: /spot
 
 
 # Spring Boot configuration

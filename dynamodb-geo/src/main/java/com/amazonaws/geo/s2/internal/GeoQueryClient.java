@@ -1,13 +1,12 @@
 package com.amazonaws.geo.s2.internal;
 
 import com.amazonaws.geo.model.GeoQueryRequest;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.dashlabs.dash.geo.model.filters.GeoFilter;
 import com.google.common.collect.ImmutableList;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +23,14 @@ public class GeoQueryClient {
     /**
      * The db client to use when executing the queries
      */
-    private final AmazonDynamoDBClient dbClient;
+    private final AmazonDynamoDB dbClient;
 
     /**
      * The executor service to use to manage the queries workload
      */
     private final ExecutorService executorService;
 
-    public GeoQueryClient(AmazonDynamoDBClient dbClient, ExecutorService executorService) {
+    public GeoQueryClient(AmazonDynamoDB dbClient, ExecutorService executorService) {
         this.dbClient = dbClient;
         this.executorService = executorService;
     }
