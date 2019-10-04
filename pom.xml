@@ -6,6 +6,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>application</module>
+    <module>dynamodb-geo</module>
   </modules>
   <parent>
     <groupId>org.springframework.boot</groupId>
