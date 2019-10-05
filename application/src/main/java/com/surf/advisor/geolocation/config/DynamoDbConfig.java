@@ -40,7 +40,7 @@ public class DynamoDbConfig {
   public GeoQueryClient geoQueryClient() {
     return new GeoQueryClient(
       amazonDynamoDBConfig(),
-      new ThreadPoolExecutor(1, 1, 0L, MILLISECONDS, new LinkedBlockingQueue<>())
+      new ThreadPoolExecutor(8, 16, 0L, MILLISECONDS, new LinkedBlockingQueue<>())
     );
   }
 
@@ -58,7 +58,7 @@ public class DynamoDbConfig {
       .geoHashColumn("geoHash")
       .geoHashKeyColumn("geoHashKey")
       .geoIndexName("geoHashKey-geoHash-index")
-      .geoHashKeyLength(9)
+      .geoHashKeyLength(6)
       .build();
   }
 

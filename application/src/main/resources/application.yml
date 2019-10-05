@@ -30,6 +30,8 @@ logging:
     org.zalando.logbook: TRACE
     org.springframework.web: DEBUG
     com.surf.advisor: DEBUG
+    com.amazonaws.geo: DEBUG
+    com.amazonaws.services.dynamodbv2: DEBUG
   path: /logs
 
 logbook:

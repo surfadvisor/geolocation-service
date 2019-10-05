@@ -14,10 +14,12 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by mpuri on 3/28/14
  */
+@Slf4j
 public class GeoQueryClient {
 
     /**
@@ -75,6 +77,9 @@ public class GeoQueryClient {
             queryResult = dbClient.query(queryRequest);
             List<Map<String, AttributeValue>> items = queryResult.getItems();
             // filter the results using the geo filter
+
+            log.debug("Executing dynamoDB query: {}\nResult: {}", queryRequest.toString(), items.toString());
+
             List<Map<String, AttributeValue>> filteredItems = resultFilter.filter(items);
             resultItems.addAll(filteredItems);
             queryRequest = queryRequest.withExclusiveStartKey(queryResult.getLastEvaluatedKey());

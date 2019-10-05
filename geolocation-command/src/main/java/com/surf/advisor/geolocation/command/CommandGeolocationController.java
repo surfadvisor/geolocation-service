@@ -1,6 +1,6 @@
 package com.surf.advisor.geolocation.command;
 
-import com.surf.advisor.geolocation.api.Geolocation;
+import com.surf.advisor.geolocation.api.model.Geolocation;
 import com.surf.advisor.geolocation.command.service.IGeolocationCommandService;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
