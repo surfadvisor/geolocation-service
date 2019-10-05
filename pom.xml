@@ -7,8 +7,9 @@
   <modules>
     <module>application</module>
     <module>dynamodb-geo</module>
-    <module>spot-command</module>
-    <module>spot-api</module>
+    <module>geolocation-command</module>
+    <module>geolocation-api</module>
+    <module>geolocation-query</module>
   </modules>
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -16,14 +17,14 @@
     <version>2.1.4.RELEASE</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>com.surf.advisor.spot</groupId>
-  <artifactId>spot-service</artifactId>
+  <groupId>com.surf.advisor.geolocation</groupId>
+  <artifactId>geolocation-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
   <scm>
-    <url>https://github.com/surfadvisor/spot-service</url>
-    <connection>scm:git:https://github.com/surfadvisor/spot-service</connection>
-    <developerConnection>scm:git:https://github.com/surfadvisor/spot-service</developerConnection>
+    <url>https://github.com/surfadvisor/geolocation-service</url>
+    <connection>scm:git:https://github.com/surfadvisor/geolocation-service</connection>
+    <developerConnection>scm:git:https://github.com/surfadvisor/geolocation-service</developerConnection>
     <tag>HEAD</tag>
   </scm>
 

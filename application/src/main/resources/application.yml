@@ -2,13 +2,13 @@
 server:
   port: ${PORT:8000}
   servlet:
-    context-path: /spot
+    context-path: /geolocation
 
 
 # Spring Boot configuration
 spring:
   application:
-    name: spots
+    name: geolocation
   output:
     ansi:
       enabled: always
