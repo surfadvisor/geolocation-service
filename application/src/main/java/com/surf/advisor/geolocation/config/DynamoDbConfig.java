@@ -58,7 +58,7 @@ public class DynamoDbConfig {
       .geoHashColumn("geoHash")
       .geoHashKeyColumn("geoHashKey")
       .geoIndexName("geoHashKey-geoHash-index")
-      .geoHashKeyLength(6)
+      .geoHashKeyLength(3)
       .build();
   }
 
