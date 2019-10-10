@@ -1,8 +1,10 @@
 package com.surf.advisor.geolocation.query;
 
+import com.surf.advisor.geolocation.api.model.GeoCluster;
 import com.surf.advisor.geolocation.api.model.Geolocation;
 import com.surf.advisor.geolocation.api.model.RectangleGeolocationRequest;
 import com.surf.advisor.geolocation.query.service.IGeolocationQueryService;
+import java.util.Collection;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -24,6 +26,13 @@ public class QueryGeolocationController {
     @Valid @NotNull @RequestBody RectangleGeolocationRequest request) {
 
     return queryService.getGeolocations(request);
+  }
+
+  @GetMapping("/geolocations/clustered")
+  public Collection<GeoCluster> getGeoClusters(
+    @Valid @NotNull @RequestBody RectangleGeolocationRequest request) {
+
+    return queryService.getGeoClusters(request);
   }
 
 }

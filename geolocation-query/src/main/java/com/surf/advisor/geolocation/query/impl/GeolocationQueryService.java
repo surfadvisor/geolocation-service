@@ -11,10 +11,13 @@ import com.amazonaws.geo.s2.internal.GeoQueryClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.surf.advisor.geolocation.api.exception.GeoQueryTechnicalException;
+import com.surf.advisor.geolocation.api.model.GeoCluster;
 import com.surf.advisor.geolocation.api.model.Geolocation;
 import com.surf.advisor.geolocation.api.model.RectangleGeolocationRequest;
 import com.surf.advisor.geolocation.query.service.IGeolocationQueryService;
+import com.surf.advisor.geolocation.query.strategy.GeohashClusteringStrategy;
 import com.surf.advisor.geolocation.query.util.GeolocationMappingUtils;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -34,7 +37,20 @@ public class GeolocationQueryService implements IGeolocationQueryService {
 
   @Override
   public List<Geolocation> getGeolocations(RectangleGeolocationRequest request) {
+    return performRectangleQuery(request).stream()
+      .map(GeolocationMappingUtils::geolocationOf).collect(toList());
+  }
 
+  @Override
+  public Collection<GeoCluster> getGeoClusters(RectangleGeolocationRequest request) {
+    var points = performRectangleQuery(request).stream()
+      .map(GeolocationMappingUtils::hashGeolocationOf).collect(toList());
+
+    return new GeohashClusteringStrategy(request).cluster(points);
+  }
+
+  private List<Map<String, AttributeValue>> performRectangleQuery(
+    RectangleGeolocationRequest request) {
     var geoQueryRequest = new Geo().rectangleQuery(
       new QueryRequest("GEOLOCATION"),
       request.getMinLatitude(),
@@ -55,7 +71,6 @@ public class GeolocationQueryService implements IGeolocationQueryService {
       throw new GeoQueryTechnicalException();
     }
 
-    return ofNullable(ddbResult).orElse(List.of()).stream()
-      .map(GeolocationMappingUtils::hashGeolocationOf).collect(toList());
+    return ofNullable(ddbResult).orElse(List.of());
   }
 }
