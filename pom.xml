@@ -36,6 +36,8 @@
     <mvn.release.plugin.version>2.5.3</mvn.release.plugin.version>
     <aws.sdk.dynamodb.version>1.11.613</aws.sdk.dynamodb.version>
 
+    <apache.commons.math.version>3.6.1</apache.commons.math.version>
+    <apache.commons.bean.version>1.9.4</apache.commons.bean.version>
     <!-- logging -->
     <zalando.logbook.version>1.5.0</zalando.logbook.version>
   </properties>
@@ -93,6 +95,16 @@
         <version>${aws.sdk.dynamodb.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-math3</artifactId>
+        <version>${apache.commons.math.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>${apache.commons.bean.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -1,6 +1,7 @@
 package com.surf.advisor.geolocation.query.impl;
 
 import static com.google.common.base.Optional.absent;
+import static com.surf.advisor.geolocation.query.strategy.ClusteringStrategy.getAvgRectangleQuerySize;
 import static java.lang.Thread.currentThread;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
@@ -16,6 +17,7 @@ import com.surf.advisor.geolocation.api.model.Geolocation;
 import com.surf.advisor.geolocation.api.model.RectangleGeolocationRequest;
 import com.surf.advisor.geolocation.query.service.IGeolocationQueryService;
 import com.surf.advisor.geolocation.query.strategy.GeohashClusteringStrategy;
+import com.surf.advisor.geolocation.query.strategy.KMeansClusteringStrategy;
 import com.surf.advisor.geolocation.query.util.GeolocationMappingUtils;
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +34,8 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 public class GeolocationQueryService implements IGeolocationQueryService {
 
+  private static final double CHANGE_CLUSTERING_STRATEGY_TRESHOLD = 5.0;
+
   private final GeoQueryClient geoQueryClient;
   private final GeoConfig geoConfig;
 
@@ -43,10 +47,16 @@ public class GeolocationQueryService implements IGeolocationQueryService {
 
   @Override
   public Collection<GeoCluster> getGeoClusters(RectangleGeolocationRequest request) {
+
     var points = performRectangleQuery(request).stream()
       .map(GeolocationMappingUtils::hashGeolocationOf).collect(toList());
 
-    return new GeohashClusteringStrategy(request).cluster(points);
+    double avgQuerySize = getAvgRectangleQuerySize(request);
+
+    var strategy = avgQuerySize > CHANGE_CLUSTERING_STRATEGY_TRESHOLD ?
+      new GeohashClusteringStrategy(request) : new KMeansClusteringStrategy(request);
+
+    return strategy.cluster(points);
   }
 
   private List<Map<String, AttributeValue>> performRectangleQuery(
