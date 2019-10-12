@@ -1,4 +1,4 @@
-package com.surf.advisor.geolocation.query.strategy;
+package com.surf.advisor.geolocation.query.clustering;
 
 import static java.lang.Math.round;
 import static java.util.stream.Collectors.groupingBy;

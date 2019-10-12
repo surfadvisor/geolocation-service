@@ -1,4 +1,4 @@
-package com.surf.advisor.geolocation.query.strategy;
+package com.surf.advisor.geolocation.query.clustering;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
@@ -6,13 +6,9 @@ import static java.lang.Math.pow;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 
-import com.surf.advisor.geolocation.api.model.Geolocation;
 import com.surf.advisor.geolocation.api.model.HashGeolocation;
 import com.surf.advisor.geolocation.api.model.RectangleGeolocationRequest;
-import com.surf.advisor.geolocation.query.strategy.KMeansClusteringStrategy.ClusterableGeolocation;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -20,26 +16,23 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.math3.ml.clustering.CentroidCluster;
 import org.apache.commons.math3.ml.clustering.Cluster;
-import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
-import org.springframework.validation.annotation.Validated;
 
 @Slf4j
 public class KMeansClusteringStrategy extends ClusteringStrategy<ClusterableGeolocation> {
 
   private static final int MIN_K = 1;
-  private static final int MAX_K = 11;
+  private static final int MAX_K = 15;
 
-  private static final int MAX_ITERATIONS = 1000;
+  private static final int MAX_ITERATIONS = 100;
 
   /**
    * valid deviation from 1.0 detection of linearity, see usages
    */
-  private static final double VALID_DELTA_RATIO_ERROR = 0.95;
+  private static final double VALID_DELTA_RATIO_ERROR = 0.3;
 
   public KMeansClusteringStrategy(RectangleGeolocationRequest request) {
     super(request);
@@ -95,26 +88,6 @@ public class KMeansClusteringStrategy extends ClusteringStrategy<ClusterableGeol
       .collect(toList());
 
     log.info("Squared error curve: {}", plot);
-  }
-
-  @Validated
-  @NoArgsConstructor
-  public static class ClusterableGeolocation extends HashGeolocation implements Clusterable {
-
-    @Override
-    public double[] getPoint() {
-      return new double[]{getLatitude(), getLongitude()};
-    }
-
-    static ClusterableGeolocation of(@NotNull Geolocation source) {
-      var result = new ClusterableGeolocation();
-      try {
-        copyProperties(result, source);
-      } catch (IllegalAccessException | InvocationTargetException e) {
-        log.error("Exception while creating clusterable geolocation object: {}", e.getMessage());
-      }
-      return result;
-    }
   }
 
   @Getter

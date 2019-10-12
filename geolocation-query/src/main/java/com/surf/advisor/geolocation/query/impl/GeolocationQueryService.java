@@ -1,7 +1,7 @@
 package com.surf.advisor.geolocation.query.impl;
 
 import static com.google.common.base.Optional.absent;
-import static com.surf.advisor.geolocation.query.strategy.ClusteringStrategy.getAvgRectangleQuerySize;
+import static com.surf.advisor.geolocation.query.clustering.ClusteringStrategy.getAvgRectangleQuerySize;
 import static java.lang.Thread.currentThread;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
@@ -14,10 +14,13 @@ import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.surf.advisor.geolocation.api.exception.GeoQueryTechnicalException;
 import com.surf.advisor.geolocation.api.model.GeoCluster;
 import com.surf.advisor.geolocation.api.model.Geolocation;
+import com.surf.advisor.geolocation.api.model.HashGeolocation;
 import com.surf.advisor.geolocation.api.model.RectangleGeolocationRequest;
+import com.surf.advisor.geolocation.query.clustering.ClusteringStrategy;
+import com.surf.advisor.geolocation.query.clustering.DBSCANClusteringStrategy;
+import com.surf.advisor.geolocation.query.clustering.GeohashClusteringStrategy;
+import com.surf.advisor.geolocation.query.clustering.KMeansClusteringStrategy;
 import com.surf.advisor.geolocation.query.service.IGeolocationQueryService;
-import com.surf.advisor.geolocation.query.strategy.GeohashClusteringStrategy;
-import com.surf.advisor.geolocation.query.strategy.KMeansClusteringStrategy;
 import com.surf.advisor.geolocation.query.util.GeolocationMappingUtils;
 import java.util.Collection;
 import java.util.List;
@@ -34,7 +37,8 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 public class GeolocationQueryService implements IGeolocationQueryService {
 
-  private static final double CHANGE_CLUSTERING_STRATEGY_TRESHOLD = 5.0;
+  private static final double SWITCH_CLUSTERING_QUERY_SIZE_THRESHOLD = 5.0;
+  private static final int SWITCH_CLUSTERING_POINTS_COUNT_THRESHOLD = 10;
 
   private final GeoQueryClient geoQueryClient;
   private final GeoConfig geoConfig;
@@ -51,12 +55,25 @@ public class GeolocationQueryService implements IGeolocationQueryService {
     var points = performRectangleQuery(request).stream()
       .map(GeolocationMappingUtils::hashGeolocationOf).collect(toList());
 
-    double avgQuerySize = getAvgRectangleQuerySize(request);
-
-    var strategy = avgQuerySize > CHANGE_CLUSTERING_STRATEGY_TRESHOLD ?
-      new GeohashClusteringStrategy(request) : new KMeansClusteringStrategy(request);
+    var strategy = resolveClusteringStrategy(request, points);
 
     return strategy.cluster(points);
+  }
+
+  private ClusteringStrategy<? extends HashGeolocation> resolveClusteringStrategy(
+    RectangleGeolocationRequest request, List<HashGeolocation> points) {
+
+    double avgQuerySize = getAvgRectangleQuerySize(request);
+
+    if (avgQuerySize > SWITCH_CLUSTERING_QUERY_SIZE_THRESHOLD) {
+      return new GeohashClusteringStrategy(request);
+    } else {
+      if (points.size() > SWITCH_CLUSTERING_POINTS_COUNT_THRESHOLD) {
+        return new KMeansClusteringStrategy(request);
+      } else {
+        return new DBSCANClusteringStrategy(request);
+      }
+    }
   }
 
   private List<Map<String, AttributeValue>> performRectangleQuery(

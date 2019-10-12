@@ -1,4 +1,4 @@
-package com.surf.advisor.geolocation.query.strategy;
+package com.surf.advisor.geolocation.query.clustering;
 
 import static java.lang.Math.abs;
 import static java.util.stream.Collectors.toList;
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class ClusteringStrategy<G extends Geolocation> {
 
-  final RectangleGeolocationRequest request;
+  private final RectangleGeolocationRequest request;
 
   ClusteringStrategy(RectangleGeolocationRequest request) {
     this.request = request;
@@ -30,10 +30,8 @@ public abstract class ClusteringStrategy<G extends Geolocation> {
 
   public final Collection<GeoCluster> cluster(@NotNull Collection<HashGeolocation> input) {
 
-    Set<Long> ids = input.stream().map(Geolocation::getObjectId).collect(toSet());
-
     log.info("Clustering {} points, queryRecSize: {}, point IDs: {}",
-      input.size(), getQueryRecSize(), ids);
+      input.size(), getQueryRecSize(), getIds(input));
 
     return clusterStream(input)
       .map(this::pointsToCluster)
@@ -51,6 +49,10 @@ public abstract class ClusteringStrategy<G extends Geolocation> {
     double lonDiff = abs(request.getMinLongitude() - request.getMaxLongitude());
 
     return (latDiff + lonDiff) / 2.0;
+  }
+
+  Set<Long> getIds(@NotNull Collection<? extends Geolocation> input) {
+    return input.stream().map(Geolocation::getObjectId).collect(toSet());
   }
 
   private GeoCluster pointsToCluster(@NotNull List<G> points) {
