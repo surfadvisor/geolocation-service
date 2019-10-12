@@ -31,6 +31,14 @@ public class DynamoDbConfig {
   @Value("${amazon.end-point.url}")
   private String awsDynamoDBEndPoint;
 
+  @Value("${amazon.tableName:GEOLOCATION}")
+  private String tableName;
+
+  @Bean
+  public String tableName() {
+    return tableName;
+  }
+
   @Bean
   public DynamoDBMapper mapper() {
     return new DynamoDBMapper(amazonDynamoDBConfig());

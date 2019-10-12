@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.toSet;
 import com.surf.advisor.geolocation.api.model.GeoCluster;
 import com.surf.advisor.geolocation.api.model.Geolocation;
 import com.surf.advisor.geolocation.api.model.HashGeolocation;
+import com.surf.advisor.geolocation.api.model.LocationId;
 import com.surf.advisor.geolocation.api.model.RectangleGeolocationRequest;
 import java.util.Collection;
 import java.util.HashSet;
@@ -60,13 +61,13 @@ public abstract class ClusteringStrategy<G extends Geolocation> {
     double avgLat = 0.0;
     double avgLon = 0.0;
 
-    Set<Long> ids = new HashSet<>();
+    Set<LocationId> ids = new HashSet<>();
 
     for (Geolocation point : points) {
       avgLat += point.getLatitude();
       avgLon += point.getLongitude();
 
-      ids.add(point.getObjectId());
+      ids.add(LocationId.of(point.getObjectType(), point.getObjectId()));
     }
 
     avgLat /= points.size();

@@ -22,6 +22,8 @@ public class GeolocationCommandService implements IGeolocationCommandService {
   private final AmazonDynamoDB ddb;
   private final GeoConfig geoConfig;
 
+  private final String tableName;
+
   @Override
   public void putGeolocation(Geolocation request) {
 
@@ -32,7 +34,7 @@ public class GeolocationCommandService implements IGeolocationCommandService {
       "longitude", new AttributeValue().withN(request.getLongitude().toString())
     );
 
-    var ddbRequest = new PutItemRequest("GEOLOCATION", new HashMap<>(item));
+    var ddbRequest = new PutItemRequest(tableName, new HashMap<>(item));
 
     ddbRequest = new Geo().putItemRequest(ddbRequest,
       request.getLatitude(), request.getLongitude(), List.of(geoConfig));
