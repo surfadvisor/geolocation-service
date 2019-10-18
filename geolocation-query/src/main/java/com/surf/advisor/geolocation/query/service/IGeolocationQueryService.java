@@ -12,5 +12,5 @@ public interface IGeolocationQueryService {
 
   Collection<GeoCluster> getGeoClusters(RectangleGeolocationRequest request);
 
-  Geolocation getGeolocation(String objectType, Long objectId);
+  Geolocation getGeolocation(String objectType, String objectId);
 }

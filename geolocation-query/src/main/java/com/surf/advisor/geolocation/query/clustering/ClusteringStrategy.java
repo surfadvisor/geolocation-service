@@ -52,7 +52,7 @@ public abstract class ClusteringStrategy<G extends Geolocation> {
     return (latDiff + lonDiff) / 2.0;
   }
 
-  Set<Long> getIds(@NotNull Collection<? extends Geolocation> input) {
+  Set<String> getIds(@NotNull Collection<? extends Geolocation> input) {
     return input.stream().map(Geolocation::getObjectId).collect(toSet());
   }
 

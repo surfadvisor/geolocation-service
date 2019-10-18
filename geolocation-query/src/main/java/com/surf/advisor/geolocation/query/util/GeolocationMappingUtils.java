@@ -42,7 +42,7 @@ public class GeolocationMappingUtils {
   }
 
   private static void setGeolocationValues(Map<String, AttributeValue> item, Geolocation result) {
-    map("objectId", item, AttributeValue::getN, Long::valueOf, result::setObjectId);
+    map("objectId", item, AttributeValue::getS, identity(), result::setObjectId);
     map("objectType", item, AttributeValue::getS, identity(), result::setObjectType);
     map("latitude", item, AttributeValue::getN, Double::valueOf, result::setLatitude);
     map("longitude", item, AttributeValue::getN, Double::valueOf, result::setLongitude);

@@ -52,7 +52,7 @@ public class GeolocationQueryService implements IGeolocationQueryService {
   private final String tableName;
 
   @Override
-  public Geolocation getGeolocation(String objectType, Long objectId) {
+  public Geolocation getGeolocation(String objectType, String objectId) {
 
     var request = new QueryRequest()
       .withTableName(tableName)
@@ -60,7 +60,7 @@ public class GeolocationQueryService implements IGeolocationQueryService {
       .withExpressionAttributeNames(Map.of("#objectType", "objectType", "#objectId", "objectId"))
       .withExpressionAttributeValues(Map.of(
         ":type", new AttributeValue(objectType),
-        ":id", new AttributeValue().withN(objectId.toString()))
+        ":id", new AttributeValue(objectId))
       );
 
     return of(request).map(dbClient::query).map(QueryResult::getItems)

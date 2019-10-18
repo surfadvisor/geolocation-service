@@ -7,7 +7,6 @@ import com.surf.advisor.geolocation.query.service.IGeolocationQueryService;
 import java.util.Collection;
 import java.util.List;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class QueryGeolocationController {
 
   @GetMapping("/geolocations/{objectType}/{objectId}")
   public Geolocation getGeolocation(@NotEmpty @PathVariable("objectType") String objectType,
-                                    @NotNull @Min(0) @PathVariable("objectId") Long objectId) {
+                                    @NotEmpty @PathVariable("objectId") String objectId) {
     return queryService.getGeolocation(objectType, objectId);
   }
 

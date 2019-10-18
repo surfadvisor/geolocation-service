@@ -1,6 +1,5 @@
 package com.surf.advisor.geolocation.api.model;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,8 +16,8 @@ import lombok.Setter;
 public class Geolocation {
 
   @NotNull
-  @Min(0)
-  private Long objectId;
+  @NotEmpty
+  private String objectId;
 
   @NotNull
   @NotEmpty

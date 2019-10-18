@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public class LocationId {
 
   private final String objectType;
-  private final Long objectId;
+  private final String objectId;
 
   @Override
   public String toString() {

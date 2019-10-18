@@ -28,7 +28,7 @@ public class GeolocationCommandService implements IGeolocationCommandService {
   public void putGeolocation(Geolocation request) {
 
     var item = Map.of(
-      "objectId", new AttributeValue().withN(request.getObjectId().toString()),
+      "objectId", new AttributeValue(request.getObjectId()),
       "objectType", new AttributeValue(request.getObjectType()),
       "latitude", new AttributeValue().withN(request.getLatitude().toString()),
       "longitude", new AttributeValue().withN(request.getLongitude().toString())
