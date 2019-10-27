@@ -17,13 +17,13 @@
   </parent>
   <groupId>com.surf.advisor.geolocation</groupId>
   <artifactId>geolocation-service</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2-SNAPSHOT</version>
 
   <scm>
     <url>https://github.com/surfadvisor/geolocation-service</url>
     <connection>scm:git:https://github.com/surfadvisor/geolocation-service</connection>
     <developerConnection>scm:git:https://github.com/surfadvisor/geolocation-service</developerConnection>
-    <tag>geolocation-service-0.0.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
 
