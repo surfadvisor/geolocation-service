@@ -1,16 +1,17 @@
 package com.surf.advisor.geolocation.api.model;
 
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class RectangleGeolocationRequest {
+public class RectangleGeolocationRequest implements Serializable {
 
   @NotNull
   private Double minLatitude;

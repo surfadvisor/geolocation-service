@@ -2,18 +2,18 @@ package com.surf.advisor.geolocation.api.model;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"objectId", "objectType"})
-public class Geolocation {
+public class Geolocation implements Serializable {
 
   @NotNull
   @NotEmpty

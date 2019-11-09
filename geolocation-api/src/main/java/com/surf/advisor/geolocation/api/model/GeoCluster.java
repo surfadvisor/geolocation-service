@@ -1,12 +1,16 @@
 package com.surf.advisor.geolocation.api.model;
 
+import java.io.Serializable;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
+import lombok.*;
+
+@Setter
 @Getter
+@ToString
 @AllArgsConstructor
-public class GeoCluster {
+@EqualsAndHashCode(of = "objectIds")
+public class GeoCluster implements Serializable {
 
   private Set<LocationId> objectIds;
   private Double latitude;
