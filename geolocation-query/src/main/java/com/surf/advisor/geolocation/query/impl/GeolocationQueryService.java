@@ -2,7 +2,9 @@ package com.surf.advisor.geolocation.query.impl;
 
 import static com.google.common.base.Optional.absent;
 import static com.surf.advisor.geolocation.query.clustering.ClusteringStrategy.getAvgRectangleQuerySize;
+import static com.surf.advisor.geolocation.query.util.RectangleQueryUtils.adjustRectangleQuery;
 import static java.lang.Thread.currentThread;
+import static java.util.Collections.emptyList;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
@@ -26,6 +28,7 @@ import com.surf.advisor.geolocation.query.clustering.GeohashClusteringStrategy;
 import com.surf.advisor.geolocation.query.clustering.KMeansClusteringStrategy;
 import com.surf.advisor.geolocation.query.service.IGeolocationQueryService;
 import com.surf.advisor.geolocation.query.util.GeolocationMappingUtils;
+import com.surf.advisor.geolocation.query.util.RectangleQueryUtils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +107,12 @@ public class GeolocationQueryService implements IGeolocationQueryService {
 
   private List<Map<String, AttributeValue>> performRectangleQuery(
     RectangleGeolocationRequest request) {
+
+    if (RectangleQueryUtils.emptyRectangleQuery(request)) {
+      return emptyList();
+    }
+    adjustRectangleQuery(request);
+
     var geoQueryRequest = new Geo().rectangleQuery(
       new QueryRequest(tableName),
       request.getMinLatitude(),
