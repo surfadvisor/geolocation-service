@@ -8,4 +8,4 @@ EXPOSE 8080
 
 ADD app.jar app.jar
 
-CMD ["java","-Xmx256m","-jar","app.jar"]
+CMD ["java","-Xmx1024m","-jar","app.jar"]
