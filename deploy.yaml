@@ -17,6 +17,9 @@ spec:
           image: <X>
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              cpu: 200m
           envFrom:
             - secretRef:
                 name: geolocation-dynamodb-secrets
@@ -34,9 +37,6 @@ spec:
       port: 8080
       targetPort: 8080
       protocol: TCP
-  resources:
-    requests:
-      cpu: 200m
   type: ClusterIP
 ---
 
