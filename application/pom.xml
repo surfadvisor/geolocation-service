@@ -3,7 +3,7 @@
   <parent>
     <artifactId>geolocation-service</artifactId>
     <groupId>com.surf.advisor.geolocation</groupId>
-    <version>0.0.5</version>
+    <version>0.0.6-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -18,17 +18,17 @@
     <dependency>
       <groupId>com.surf.advisor.geolocation</groupId>
       <artifactId>dynamodb-geo</artifactId>
-      <version>0.0.5</version>
+      <version>0.0.6-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.surf.advisor.geolocation</groupId>
       <artifactId>geolocation-command</artifactId>
-      <version>0.0.5</version>
+      <version>0.0.6-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.surf.advisor.geolocation</groupId>
       <artifactId>geolocation-query</artifactId>
-      <version>0.0.5</version>
+      <version>0.0.6-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
