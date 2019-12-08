@@ -1,5 +1,5 @@
 def defaults = [:]
-defaults['version'] = '0.0.2'
+defaults['version'] = '0.0.5'
 
 properties([
   parameters([

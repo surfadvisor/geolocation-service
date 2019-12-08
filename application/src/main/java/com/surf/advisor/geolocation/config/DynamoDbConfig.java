@@ -48,7 +48,7 @@ public class DynamoDbConfig {
   public GeoQueryClient geoQueryClient() {
     return new GeoQueryClient(
       amazonDynamoDBConfig(),
-      new ThreadPoolExecutor(8, 16, 0L, MILLISECONDS, new LinkedBlockingQueue<>())
+      new ThreadPoolExecutor(4, 8, 0L, MILLISECONDS, new LinkedBlockingQueue<>())
     );
   }
 
